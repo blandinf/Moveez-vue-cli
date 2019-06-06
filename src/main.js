@@ -19,15 +19,22 @@ Vue.use(Router);
 
 const routes = [
   {
-    name: 'movie.show',
-    path: '/movie/:movie',
-    component: () => import('./components/movies/Show.vue'),
+    name: 'home',
+    path: '/',
+    component: () => import('./components/movies/Index.vue'),
     props: true,
   },
+    {
+      name: 'movie.show',
+      path: '/movie/:movie',
+      component: () => import('./components/movies/Show.vue'),
+      props: true,
+    },
 ];
 
 const router = new Router({
-  routes
+    routes,
+    mode: 'history'
 });
 
 Vue.config.productionTip = false;
