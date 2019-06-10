@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section v-if="movie">
         <div
             id="backdrop"
             class="position-relative">
@@ -18,14 +18,45 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    import Vue from 'vue';
+
     export default {
         name: "Show",
         props: {
-            movie: {},
+            id: {type: Number},
         },
-        mounted() {
-            console.log(this.movie)
-        }
+        data: () => ({
+            movie: null,
+            loading: false,
+        }),
+        mounted(){
+            this.getMovie();
+        },
+        watch: {
+            id(){
+                this.getMovie();
+            },
+        },
+        methods: {
+            getMovie(){
+                this.loading = true;
+                let self = this;
+                let url = 'https://api.themoviedb.org/3/movie/' + this.id;
+                axios.get(url, {
+                    params: {
+                        api_key: process.env.VUE_APP_API_KEY,
+                        language: 'fr',
+                    }
+                }).then(function (response) {
+                    self.movie = response.data;
+                    self.loading = false;
+                }).catch(function (error) {
+                    Vue.toasted.error(error);
+                    self.loading = false;
+                });
+            },
+        },
     }
 </script>
 

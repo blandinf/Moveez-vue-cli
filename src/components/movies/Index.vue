@@ -59,9 +59,6 @@
                 </b-tabs>
             </b-card>
         </div>
-        <router-view
-            v-else
-            :movie="selectedMovie" />
     </section>
 </template>
 
@@ -129,7 +126,7 @@
                 let url = 'https://api.themoviedb.org/3/movie/' + this.selectedFilter;
                 axios.get(url, {
                     params: {
-                        api_key: '2d72d4e8b0b817a5669a414faf96933a',
+                        api_key: process.env.VUE_APP_API_KEY,
                         page: this.selectedPage,
                         language: this.selectedLanguage.toLowerCase(),
                     }
@@ -152,7 +149,7 @@
 
             selectMovie(movie){
                 this.selectedMovie = movie;
-                this.$router.push({ name: 'movie.show', params: { movie: this.selectedMovie }})
+                this.$router.push({ name: 'movie.show', params: { id: this.selectedMovie.id }})
             },
 
             displayVote(movie){
@@ -166,9 +163,7 @@
     }
 </script>
 
-<style
-    scoped
-    lang="scss">
+<style lang="scss">
 
     .movie:hover {
         box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
